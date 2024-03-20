@@ -1,14 +1,22 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Acme Dashboard',
-    default: 'Acme Dashboard',
+    template: '%s | Brian PWA',
+    default: 'Brian PWA',
   },
-  description: 'The official Next.js Learn Dashboard built with App Router.',
-  metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+  description: 'Personalized PWA todo application',
+  generator: 'Next.js',
+  manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
+  minimumScale: 1,
+  initialScale: 1,
+  width: 'device-width',
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
