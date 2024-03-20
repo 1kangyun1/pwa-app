@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   manifest: '/manifest.json',
   metadataBase: new URL('https://nextjs-dashboard-phi-one-81.vercel.app/'),
+  icons: [{ rel: 'icon', url: 'icons/icon-192x192.png' }],
 };
 
 export const viewport: Viewport = {
