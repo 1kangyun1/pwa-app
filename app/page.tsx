@@ -12,7 +12,7 @@ export default function Page() {
           <p
             className={`${lusitana.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}
           >
-            <strong>Welcome to Brian's scheduler application</strong>
+            <strong>{"Welcome to Brian's scheduler application"}</strong>
           </p>
           <Link
             href="/login"
