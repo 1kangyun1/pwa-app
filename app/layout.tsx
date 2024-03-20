@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   },
   description: 'Personalized PWA todo application',
   generator: 'Next.js',
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
   metadataBase: new URL('https://nextjs-dashboard-phi-one-81.vercel.app/'),
   icons: [{ rel: 'icon', url: 'icons/icon-192x192.png' }],
 };
