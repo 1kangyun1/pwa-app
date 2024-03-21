@@ -29,7 +29,7 @@ export default function RootLayout({
       <head>
         <link
           rel="manifest"
-          href="manifest.webmanifest"
+          href="/manifest.webmanifest"
           crossOrigin="use-credentials"
         />
       </head>
