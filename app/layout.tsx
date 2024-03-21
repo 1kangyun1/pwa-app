@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   },
   description: 'Personalized PWA todo application',
   generator: 'Next.js',
-  manifest: '/manifest.webmanifest',
   icons: [{ rel: 'icon', url: 'icons/icon-192x192.png' }],
 };
 
@@ -27,6 +26,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="manifest"
+          href="manifest.webmanifest"
+          crossOrigin="use-credentials"
+        />
+      </head>
       <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
