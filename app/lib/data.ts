@@ -141,7 +141,7 @@ export async function fetchFilteredTasks(query: string, currentPage: number) {
         title,
         description,
         date,
-        status,
+        status
       FROM tasks
       WHERE
         title::text ILIKE ${`%${query}%`} OR
