@@ -4,6 +4,7 @@ import {
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
+  TasksTable,
   LatestInvoiceRaw,
   User,
   Revenue,
@@ -125,6 +126,35 @@ export async function fetchFilteredInvoices(
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoices.');
+  }
+}
+
+export async function fetchFilteredTasks(query: string, currentPage: number) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const tasks = await sql<TasksTable>`
+      SELECT
+        id,
+        user_id,
+        title,
+        description,
+        date,
+        status,
+      FROM tasks
+      WHERE
+        title::text ILIKE ${`%${query}%`} OR
+        description::text ILIKE ${`%${query}%`} OR
+        date::text ILIKE ${`%${query}%`}
+      ORDER BY date DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return tasks.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch tasks.');
   }
 }
 
