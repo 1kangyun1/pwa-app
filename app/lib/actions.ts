@@ -60,7 +60,7 @@ const TaskFormSchema = z.object({
 
 const CreateTask = TaskFormSchema.omit({ id: true, date: true });
 
-export type State = {
+export type InvoiceState = {
   errors?: {
     customerId?: string[];
     amount?: string[];
@@ -69,7 +69,10 @@ export type State = {
   message?: string | null;
 };
 
-export async function createInvoice(prevState: State, formData: FormData) {
+export async function createInvoice(
+  prevState: InvoiceState,
+  formData: FormData,
+) {
   const validatedFields = CreateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
@@ -102,7 +105,16 @@ export async function createInvoice(prevState: State, formData: FormData) {
   redirect('/dashboard/invoices');
 }
 
-export async function createTask(prevState: State, formData: FormData) {
+export type TaskState = {
+  errors?: {
+    title?: string[];
+    description?: string[];
+    status?: string[];
+  };
+  message?: string | null;
+};
+
+export async function createTask(prevState: TaskState, formData: FormData) {
   const session = await auth();
   if (!session?.user?.id) {
     return {
@@ -143,7 +155,7 @@ export async function createTask(prevState: State, formData: FormData) {
 
 export async function updateInvoice(
   id: string,
-  prevState: State,
+  prevState: InvoiceState,
   formData: FormData,
 ) {
   const validatedFields = UpdateInvoice.safeParse({
