@@ -61,7 +61,7 @@ export type TasksTable = {
   title: string;
   description: string;
   date: string;
-  status: boolean;
+  status: string;
 };
 
 export type CustomersTableType = {
