@@ -1,6 +1,7 @@
 import InvoiceStatus from '@/app/ui/invoices/status';
 import { formatDateToLocal } from '@/app/lib/utils';
 import { fetchFilteredTasks } from '@/app/lib/data';
+import { DeleteTask, UpdateTask } from './buttons';
 
 export default async function TasksTable({
   query,
@@ -24,15 +25,20 @@ export default async function TasksTable({
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
-                    <p className="text-sm text-gray-500">{task.title}</p>
+                    <div className="mb-2 flex items-center">
+                      <p>{task.title}</p>
+                    </div>
                   </div>
                   <InvoiceStatus status={task.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
-                    <p>{formatDateToLocal(task.date)}</p>
+                    <p>{task.description}</p>
                   </div>
-                  <div className="flex justify-end gap-2"></div>
+                  <div className="flex justify-end gap-2">
+                    <UpdateTask id={task.id} />
+                    <DeleteTask id={task.id} />
+                  </div>
                 </div>
               </div>
             ))}
@@ -79,8 +85,8 @@ export default async function TasksTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      {/* <UpdateTask id={invoice.id} />
-                      <DeleteTask id={invoice.id} /> */}
+                      <UpdateTask id={task.id} />
+                      <DeleteTask id={task.id} />
                     </div>
                   </td>
                 </tr>
