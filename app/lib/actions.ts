@@ -59,6 +59,7 @@ const TaskFormSchema = z.object({
 });
 
 const CreateTask = TaskFormSchema.omit({ id: true, date: true });
+const UpdateTask = TaskFormSchema.omit({ id: true, date: true });
 
 export type InvoiceState = {
   errors?: {
@@ -196,5 +197,63 @@ export async function deleteInvoice(id: string) {
     return { message: 'Deleted Invoice.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Invoice.' };
+  }
+}
+
+export async function updateTask(
+  id: string,
+  prevState: TaskState,
+  formData: FormData,
+) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {
+      message: 'Invalid session.',
+    };
+  }
+
+  const validatedFields = UpdateTask.safeParse({
+    title: formData.get('title'),
+    description: formData.get('description'),
+    status: formData.get('status'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Task.',
+    };
+  }
+
+  const { title, description, status } = validatedFields.data;
+
+  try {
+    await sql`
+        UPDATE tasks
+        SET title = ${title}, description = ${description}, status = ${status}
+        WHERE id = ${id} AND user_id = ${session.user.id}
+      `;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Update Task.' };
+  }
+
+  revalidatePath('/dashboard');
+  redirect('/dashboard');
+}
+
+export async function deleteTask(id: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {
+      message: 'Invalid session.',
+    };
+  }
+
+  try {
+    await sql`DELETE FROM tasks WHERE id = ${id} AND user_id = ${session.user.id}`;
+    revalidatePath('/dashboard');
+    return { message: 'Deleted Task.' };
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Task.' };
   }
 }
