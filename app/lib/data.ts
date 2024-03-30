@@ -8,9 +8,11 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  TaskForm,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
+import { auth } from '@/auth';
 
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
@@ -200,6 +202,31 @@ export async function fetchInvoiceById(id: string) {
     }));
 
     return invoice[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoice.');
+  }
+}
+
+export async function fetchTaskById(id: string) {
+  noStore();
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error('Invalid session.');
+  }
+
+  try {
+    const data = await sql<TaskForm>`
+      SELECT
+        tasks.id,
+        tasks.title,
+        tasks.description,
+        tasks.status
+      FROM tasks
+      WHERE tasks.id = ${id} AND user_id = ${session.user.id};
+    `;
+
+    return data.rows[0];
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
